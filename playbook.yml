@@ -1,0 +1,52 @@
+---
+- name: Software Installation
+  hosts: all
+  become: true
+
+  tasks:
+    - name: System Update
+      ansible.builtin.apt:
+        state: latest
+        update_cache: true
+
+    - name: Install required packages
+      ansible.builtin.apt:    
+        name:
+          - pulseaudio
+
+    - name: Install Moonlight Repo
+      ansible.builtin.shell:
+        cmd: |
+          curl -1sLf 'https://dl.cloudsmith.io/public/moonlight-game-streaming/moonlight-qt/setup.deb.sh' | distro=raspbian codename=$(lsb_release -cs) sudo -E bash
+    
+    - name: Install Software
+      ansible.builtin.apt:
+        name:
+          - moonlight-qt
+          - pulseaudio
+        state: latest
+
+    - name: Run raspi-config settings
+      ansible.builtin.command: "raspi-config nonint {{ item }}"
+      with_items:
+        - do_boot_behaviour B2 # Boot to console, autologin
+        - do_audioconf 1 # Audio set to pulseaudio
+
+    - name: Reboot
+      ansible.builtin.reboot:
+
+- name: User Configuration
+  hosts: all
+  become: false
+  tasks:
+    - name: Create moonlight user service
+      ansible.builtin.copy:
+        dest: "{{ ansible_env.HOME }}/.config/systemd/user/"
+        src: files/moonlight.service
+
+    - name: Enable moonlight user service 
+      ansible.builtin.systemd_service:
+        name: moonlight
+        enabled: true
+        state: started
+        scope: user
