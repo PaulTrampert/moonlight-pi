@@ -9,11 +9,6 @@
         state: latest
         update_cache: true
 
-    - name: Install required packages
-      ansible.builtin.apt:    
-        name:
-          - pulseaudio
-
     - name: Install Moonlight Repo
       ansible.builtin.shell:
         cmd: |
