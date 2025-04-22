@@ -4,6 +4,11 @@
   become: true
 
   tasks:
+    - name: Secure sudo
+      ansible.builtin.file:
+        path: /etc/sudoers.d/010_pi-nopasswd
+        state: absent
+
     - name: System Update
       ansible.builtin.apt:
         state: latest
