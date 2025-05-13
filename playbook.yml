@@ -35,7 +35,7 @@
       register: moonlight_key
 
     - name: Dearmor keyring
-      ansible.builtin.command: 
+      ansible.builtin.command:
         cmd: "gpg --dearmor {{ moonlight_armored_keyring }}"
       when: moonlight_key is changed
 
@@ -51,7 +51,7 @@
         url: "{{ moonlight_repo_url }}"
         dest: "{{ moonlight_repo_dest }}"
         mode: '0644'
-    
+
     - name: Install Software
       ansible.builtin.apt:
         name:
@@ -76,8 +76,9 @@
       ansible.builtin.copy:
         dest: "{{ ansible_env.HOME }}/.config/systemd/user/"
         src: files/moonlight.service
+        mode: '0644'
 
-    - name: Enable moonlight user service 
+    - name: Enable moonlight user service
       ansible.builtin.systemd_service:
         name: moonlight
         enabled: true
