@@ -57,6 +57,8 @@
         name:
           - moonlight-qt
           - pulseaudio
+          - unattended-upgrades
+          - apt-listchanges
         update_cache: true
 
     - name: Run raspi-config settings
