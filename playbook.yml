@@ -7,7 +7,7 @@
     moonlight_keyring_url: "https://dl.cloudsmith.io/public/moonlight-game-streaming/moonlight-qt/gpg.2F6AE14E1C660D44.key"
     moonlight_armored_keyring: "{{ keyring_dir }}/moonlight-game-streaming-moonlight-qt-archive-keyring"
     moonlight_keyring: "{{ keyring_dir }}/moonlight-game-streaming-moonlight-qt-archive-keyring.gpg"
-    moonlight_repo_url: "https://dl.cloudsmith.io/public/moonlight-game-streaming/moonlight-qt/config.deb.txt?distro={{ ansible_lsb.id }}&codename={{ ansible_lsb.codename }}&version={{ ansible_lsb.release }}&arch={{ ansible_architecture }}"
+    moonlight_repo_url: "https://dl.cloudsmith.io/public/moonlight-game-streaming/moonlight-qt/config.deb.txt?distro={{ ansible_facts['lsb']['id'] }}&codename={{ ansible_facts['lsb']['codename'] }}&version={{ ansible_facts['lsb']['release'] }}&arch={{ ansible_facts['architecture'] }}"
     moonlight_repo_dest: "/etc/apt/sources.list.d/moonlight-game-streaming-moonlight-qt.list"
   tasks:
     - name: Secure sudo
@@ -76,7 +76,7 @@
   tasks:
     - name: Create moonlight user service
       ansible.builtin.copy:
-        dest: "{{ ansible_env.HOME }}/.config/systemd/user/"
+        dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/"
         src: files/moonlight.service
         mode: '0644'
 
