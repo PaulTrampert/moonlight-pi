@@ -74,8 +74,14 @@
   hosts: all
   become: false
   tasks:
-    - name: Create moonlight user service
+    - name: Configure EGLFS
       ansible.builtin.copy:
+        dest: "{{ ansible_facts['env']['HOME'] }}/.config/eglfs.json"
+        src: files/eglfs.json
+        mode: '0644'
+
+    - name: Create moonlight user service
+      ansible.builtin.template:
         dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/"
         src: files/moonlight.service
         mode: '0644'

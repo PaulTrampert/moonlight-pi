@@ -5,6 +5,7 @@ Wants=network-online.target
 
 [Service]
 Type=simple
+Environment="QT_QPA_EGLFS_KMS_CONFIG={{ ansible_facts['env']['HOME'] }}/.config/eglfs.json"
 ExecStart=/usr/bin/moonlight-qt
 Restart=always
 RestartSec=5
